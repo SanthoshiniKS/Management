@@ -20,7 +20,7 @@
 	</div>
 
 	<div class="mb-3">
-		<label class="form-label">CTC:</label>
+		<label class="form-label" min="10000" max="5000000">CTC:</label>
 		<input asp-for="CTC" type="number" required />
 	</div>
 	<div class="mb-3">
@@ -44,7 +44,7 @@
 	</div>
 	<div>
 	<button type="submit" class="btn btn-primary">Add</button>
-	<button onclick="location.href='@Url.Action("Index","Employee")'">Back</button>
+	<button onclick="location.href='@Url.Action("Index","Employee")'" class="btn btn-secondary">Back</button>
 	</div>
 
 	<div id="toastContainer" class="position-fixed top-0 end-0 p-3" style="z-index:9999;">

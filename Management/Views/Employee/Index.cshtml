@@ -7,8 +7,10 @@
 	ViewData["Title"] = "Employee List";
 }
 <h2>Employee List</h2>
+<div class="mb-3">
+	<a asp-action="Add" class="btn btn-primary">Add Employee</a>
+</div>
 
-<a asp-action="Add" class="btn btn-primary">Add Employee</a><br />
 
 @if(!Model.Any()){
 	<p>No Employees found</p>

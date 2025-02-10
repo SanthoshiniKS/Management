@@ -17,19 +17,19 @@ namespace Management.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var departments =_context.Departments.ToList();
+            var departments =await _context.Departments.ToListAsync();
             return View(departments);
         }
 
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Add([FromBody]DepartmentRequest request)
+        public async Task<IActionResult> Add([FromBody]DepartmentRequest request)
         {
             try
             {
@@ -43,7 +43,7 @@ namespace Management.Controllers
                         }
                     }
                 }
-                var existingDepts = _context.Departments.Select(d => d.Name.ToLower()).ToList() ?? new List<string>();
+                var existingDepts =await _context.Departments.Select(d => d.Name.ToLower()).ToListAsync() ?? new List<string>();
                 Console.WriteLine(existingDepts.Count);
                 var dupliNames = request.name.Where(name => existingDepts.Contains(name.ToLower())).ToList() ?? new List<string>();
 
@@ -53,7 +53,7 @@ namespace Management.Controllers
                 }
                 var newDepts=request.name.Select(name => new Department { Name=name}).ToList();
                 _context.Departments.AddRange(newDepts);
-                _context.SaveChanges();
+                _context.SaveChangesAsync();
 
                 return Json(new { success = true,message="Departments added successfully" });
             }
@@ -64,44 +64,44 @@ namespace Management.Controllers
 
         }
         [HttpPost]        
-        public IActionResult Edit([FromBody]Department department)
+        public async Task<IActionResult> Edit([FromBody]Department department)
         {
             if (department == null || string.IsNullOrWhiteSpace(department.Name))
             {
                 return Json(new { success = false, message = "Invalid data" });
             }
-            var existing=_context.Departments.FirstOrDefault(d=>d.Id==department.Id);
+            var existing=await _context.Departments.FirstOrDefaultAsync(d=>d.Id==department.Id);
             if (existing == null)
             {
                 return Json(new { success = false, message = "Department not found" });
             }
-            bool isDuplicate=_context.Departments.Any(d=>d.Name.ToLower()==department.Name.ToLower() && d.Id!=department.Id);
+            bool isDuplicate=await _context.Departments.AnyAsync(d=>d.Name.ToLower()==department.Name.ToLower() && d.Id!=department.Id);
             if (isDuplicate) {
                 return Json(new { success = false, message = "Department already exists!!" });
             }
             existing.Name=department.Name;
-            _context.SaveChanges();
+            _context.SaveChangesAsync();
             return Json(new { success = true, message = "Department Updated successfully" });
         }
 
 
         [HttpGet]
-        public IActionResult DeleteDepartment(int id)
+        public async  Task<IActionResult> DeleteDepartment(int id)
         {
             try
             {
                 Console.WriteLine(id);
-                var department = _context.Departments.FirstOrDefault(dept => dept.Id == id);
+                var department =await _context.Departments.FirstOrDefaultAsync(dept => dept.Id == id);
                 if (department == null)
                 {
                     return Json(new { success = false, message = "Department not found" });
                 }
-                var employeesInDept = _context.Employees.Any(e => e.DepartmentId == id);
+                var employeesInDept =await _context.Employees.AnyAsync(e => e.DepartmentId == id);
                 if (employeesInDept) {
                     return Json(new { success = false, message = "Cannot Delete Department. There are some employees assigned to this Department" });
                 }
                 _context.Departments.Remove(department);
-                _context.SaveChanges();
+                _context.SaveChangesAsync();
                 return Json(new { success = true, message = "Department Deleted Successfully!" });
             }
             catch (Exception ex) { 

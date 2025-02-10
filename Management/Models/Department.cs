@@ -10,7 +10,7 @@ namespace Management.Models
 
         [Required]
         [StringLength(100)]
-        public String Name {  get; set; }
+        public string Name {  get; set; }
         
     }
 }
