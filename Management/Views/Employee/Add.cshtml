@@ -1,0 +1,66 @@
+﻿@model Employee
+
+<h2 class="text-center">Add Employee</h2>
+<div class="form-container">
+	<div class="form-box">
+<form method="post" id="addEmployeeForm">
+	<div class="mb-3">
+		<label class="form-label">Employee Name:</label>
+		<input asp-for="Name" class="form-control" type="text" required />
+	</div>
+
+	<div class="mb-3">
+		<label class="form-label">City:</label>
+		<select id="CityId" asp-for="CityId" asp-items="ViewBag.Cities" class="form-control" required>
+			<option value="">Select City</option>
+			<option value="other">Other</option>
+		</select>
+		<input type="text" id="OtherCity" class="form-control" style="display:none;" placeholder="Enter New City" name="otherCity" />
+		<span asp-validation-for="CityId" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label class="form-label">CTC:</label>
+		<input asp-for="CTC" type="number" required />
+	</div>
+	<div class="mb-3">
+		<label asp-for="DepartmentId" class="control-label">Department:</label>
+		<select id="DepartmentDropdown" asp-for="DepartmentId"class="form-control" asp-items="ViewBag.Departments" >
+			<option value="">Select Department</option>
+		</select>
+		<span asp-validation-for="DepartmentId" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label class="form-label">Position:</label>
+		<input asp-for="Position" type="text" id="empPosition" required />
+	</div>
+
+	<div class="mb-3" style="display:none;" id="ManagerColumn">
+		<label for="ManagerName" class="form-label" id="ManagerLabel">Manager Name:</label>
+		<input type="text" class="form-control" id="ManagerName" readonly/>
+		<input type="hidden" asp-for="ManagerID" id="ManagerId"/>
+		<span asp-validation-for="ManagerID" class="text-danger"></span>
+	</div>
+	<div>
+	<button type="submit" class="btn btn-primary">Add</button>
+	<button onclick="location.href='@Url.Action("Index","Employee")'">Back</button>
+	</div>
+
+	<div id="toastContainer" class="position-fixed top-0 end-0 p-3" style="z-index:9999;">
+		<div id="successToast" class="toast" role="alert" aria-live="assertive"aria-atomic="true" data-bs-autohide="true" data-bs-delay="3000">
+			<div class="toast-header">
+				<strong class="me-auto">Success</strong>
+				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+			<div class="toast-body">
+				Employee added successfully!
+			</div>
+		</div>
+		
+	</div>
+</form>
+</div>
+
+</div>
+

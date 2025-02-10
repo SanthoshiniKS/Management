@@ -1,0 +1,47 @@
+﻿<h2 class="text-center">Employee List</h2>
+<a asp-action="AddEmployee" class="btn btn-primary">Add Employee</a>
+<table border="1">
+	<thead>
+		<tr>
+			<th>Employee ID</th>
+			<th>Employee Name</th>
+			<th>Department</th>
+			<th>City</th>
+			<th>CTC</th>
+			<th>Position</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody id="employeeTable"></tbody>
+</table>
+
+<script>
+	$(document).ready(function){
+		$.get("/api/employees",function(data){
+			data.foreach(emp=>{
+				$("#employeeTable").append(`<tr>
+							<td>${emp.employeeId}</td>
+							<td>${emp.employeeName}</td>
+							<td>${emp.departmentId}</td>
+							<td>${emp.city}</td>
+							<td>${emp.ctc}</td>
+							<td>${emp.position}</td>
+							<td>
+								<button onclick="editEmployee(${emp.employeeId})">Edit</button>
+								<button onclick="deleteEmployee(${emp.employeeId})">Delete</button>
+							</td>
+						</tr>`);
+			});
+		});
+
+		function deleteEmployee(id){
+			$.ajax({
+				url:"/api/employee/"+id,
+				type:"DELETE",
+				success: function(){
+					location.reload();
+				}
+			});
+		}
+	}
+</script>

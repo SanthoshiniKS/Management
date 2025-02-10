@@ -1,0 +1,22 @@
+﻿@page
+@model Management.Models.Department
+
+<h2>Edit Department</h2>
+@if (Model != null)
+{
+	<form method="put" asp-action="Edit" asp-controller="Department">
+		<div class="mb-3">
+			<label class="form-label">Employee Name:</label>
+			<input asp-for="Name" id="deptName" value="@Model.Name" required />
+		</div>
+
+		<div class="mb-3">
+			<label class="form-label">ManagerId:</label>
+				<input id="empCity" required></input>
+		</div>
+		<button type="submit" id="editEmployee">Update</button>
+	</form>
+}
+else{
+	<p>Error: Employee data is not available</p>
+}

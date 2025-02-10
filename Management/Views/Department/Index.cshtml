@@ -1,0 +1,80 @@
+﻿
+
+@{
+	ViewData["Title"] = "Department List";
+}
+<h2>Department List</h2>
+
+<a asp-action="Add" asp-controller="Department" class="btn btn-primary">Add Department</a><br />
+
+<table class="table table-bordered">
+	<thead class="table-dark">
+		<tr>
+			<th>Department ID</th>
+			<th>Department Name</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var dept in Model)
+		{
+			<tr data-id="@dept.Id">
+				<td>@dept.Id</td>
+				<td class="dept-name">@dept.Name</td>
+				<td>
+					<a class="btn btn-primary edit-Btn" data-id="@dept.Id" data-name="@dept.Name" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+						<i class="fas fa-pencil-alt"></i>
+					</a>
+					<a class="btn btn-danger delete-Btn" data-id="@dept.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+						<i class="fas fa-trash"></i>
+					</a>
+				
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+ 
+<!--Modal to Edit Department-->
+<div class="modal fade" id="editDeptModal" tabindex="-1" aria-labelledby="editDeptModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="editDeptLabel">Edit Department</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form id="editDeptForm">
+					<input type="hidden" id="editDeptId" />
+					<div class="mb-3">
+						<label for="editDeptName" class="form-label">Department Name: </label>
+						<input type="text" class="form-control" id="editDeptName"  required/> 
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-primary" id="editDeptButton">Update</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--Modal to Delete Department-->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Deletion</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p>Are you sure want to delete this department? This action cannot be undone.</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-primary" id="confirmDeleteButton">Delete</button>
+			</div>
+		</div>
+	</div>
+</div>

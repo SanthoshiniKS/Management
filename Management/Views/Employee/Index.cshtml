@@ -1,0 +1,83 @@
+﻿@model IEnumerable<Management.Models.Employee>
+
+@if (ViewBag.ErrorMessage != null){
+	<div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+}
+@{
+	ViewData["Title"] = "Employee List";
+}
+<h2>Employee List</h2>
+
+<a asp-action="Add" class="btn btn-primary">Add Employee</a><br />
+
+@if(!Model.Any()){
+	<p>No Employees found</p>
+}
+else{
+	<table class="table table-bordered">
+		<thead class="table-dark">
+			<tr>
+				<th> ID</th>
+				<th>Name</th>
+				<th>Department</th>
+				<th>City</th>
+				<th>Position</th>
+				<th>CTC</th>
+				<th>Manager Name</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var emp in Model)
+			{
+				<tr data-id="@emp.Id">
+					<td>@emp.Id</td>
+					<td class="emp-name">@emp.Name</td>
+					<td class="empdept-name">@emp.Department.Name</td>
+					<td class="city-name">@emp.City.Name</td>
+					<td class="position">@emp.Position</td>
+					<td class="ctc">@emp.CTC</td>
+					<td>
+						@if(emp.ManagerID.HasValue){
+							var manager = Model.FirstOrDefault(m => m.Id == emp.ManagerID);
+							if(manager!=null){
+								@manager.Name
+							}else{
+								@:Manager Not Found
+							}
+						}
+						else{
+							@:No Manager
+						}
+					</td>
+					<td>
+						<a class="btn btn-warning EditEmployee" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" onclick="editEmployee(@emp.Id)">
+							<i class="fas fa-pencil-alt"></i>
+						</a>
+						<a class="btn btn-danger delete-Btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" data-id="@emp.Id">
+							<i class="fas fa-trash"></i>
+						</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+<div class="modal fade" id="confirmDeleteEmpModal" tabindex="-1" aria-labelledby="confirmDeleteEmpModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="confirmDeleteEmpModalLabel">Confirm Deletion</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p>Are you sure want to delete this Employee? This action cannot be undone.</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-primary" id="confirmDeleteEmpButton">Delete</button>
+			</div>
+		</div>
+	</div>
+</div>

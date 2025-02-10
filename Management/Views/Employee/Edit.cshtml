@@ -1,0 +1,67 @@
+﻿
+@model Management.Models.Employee
+
+@{
+	ViewData["Title"] = "Edit Employee";
+}
+
+<h2 class="text-center text-">Edit Employee</h2>
+@if (Model != null)
+{
+	<div class="form-container">
+		<div class="form-box">
+	<form asp-action="Edit" id="editEmployeeForm">
+		<div>
+			<input type="hidden" name="Id" id="EmployeeId" value="@Model.Id"/>
+		</div>
+		<div class="mb-3">
+			<label class="form-label">Employee Name:</label>
+			<input asp-for="Name" class="form-control" type="text" required />
+		</div>
+
+		<div class="mb-3">
+			<label class="form-label">City:</label>
+			<select id="CityId" asp-for="CityId" asp-items="ViewBag.Cities" required>
+				<option value="">Select City</option>
+				<option value="other">Other</option>
+			</select>
+			<input type="text" id="OtherCity" class="form-control" style="display:none;" placeholder="Enter New City" name="otherCity" />
+			<span asp-validation-for="CityId" class="text-danger"></span>
+		</div>
+
+		<div class="mb-3">
+			<label class="form-label">CTC:</label>
+			<input asp-for="CTC" type="number" required />
+		</div>
+		<div class="mb-3">
+			<label asp-for="DepartmentId" class="control-label">Department:</label>
+			<select id="DepartmentDropdown" asp-for="DepartmentId" class="form-control" asp-items="ViewBag.Departments">
+				<option value="">Select Department</option>
+			</select>
+			<span asp-validation-for="DepartmentId" class="text-danger"></span>
+		</div>
+
+		<div class="mb-3">
+			<label class="form-label">Position:</label>
+			<input asp-for="Position" type="text" id="empPosition" required />
+		</div>
+
+		<div class="mb-3" style="display:none;" id="ManagerColumn">
+			<label for="ManagerName" class="form-label" id="ManagerLabel">Manager Name:</label>
+			<input type="text" class="form-control" id="ManagerName" readonly />
+			<input type="hidden" asp-for="ManagerID" id="ManagerId" />
+			<span asp-validation-for="ManagerID" class="text-danger"></span>
+		</div>
+
+		<div class="mb-3">
+					<button type="submit" class="btn btn-primary">Update</button>
+					<button type="button" class="btn btn-outline-light">Back</button>
+		</div>
+		
+	</form>
+	</div>
+	</div>
+}
+else{
+	<p>Error: Employee data is not available</p>
+}
